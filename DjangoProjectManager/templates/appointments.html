@@ -1,0 +1,58 @@
+{% extends 'base.html'%} {% block content %} {% if user.is_authenticated %}
+<h1>Appointments</h1>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Descripcion</th>
+      <th scope="col">Fecha</th>
+      <th scope'col'>Estado</th>
+      <th scope'col'>Causa</th>
+      <th scope'col'>Cliente</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% if appointments %} {% for appointment in appointments %}
+    <tr>
+     
+      <td><a href='{%url 'view_appointment' appointment.id %}' >{{appointment.description}}</a></td>
+      <td>{{appointment.date}}</td>
+      <td>{{appointment.is_done}}</td>
+      <td>{{appointment.project_id}}</td>
+      <td>{{appointment.client_id}}</td>
+
+    </tr>
+    {% endfor %} {%endif%}
+  </tbody>
+</table>
+{% else %}
+<div class='col-md-6 offset-md-3'>
+  <h1>Iniciar sesion</h1>
+  <form method="POST" action="{%url 'home' %}">
+    {% csrf_token %}
+    <form>
+      <div class="mb-3">
+        <input
+          type="text"
+          class="form-control"
+          name="username"
+          placeholder="Username"
+          required
+        />
+      </div>
+
+      <div class="mb-3">
+        <input
+          type="password"
+          class="form-control"
+          name="password"
+          placeholder="Password"
+          required
+        />
+      </div>
+
+      <button type="submit" class="btn btn-primary">Iniciar sesion</button>
+    </form>
+</div>
+
+  {% endif %} {% endblock %}
+</form>

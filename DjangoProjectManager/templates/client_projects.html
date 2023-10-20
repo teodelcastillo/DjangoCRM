@@ -1,0 +1,35 @@
+{% extends "base.html" %} {% block content %}
+<h2>Projects of {{ client.name }}</h2>
+
+{% if projects %}
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Project Name</th>
+      <th>Project ID</th>
+      <th>Project Description</th>
+      <th>Project Status</th>
+      <th>Project Start Date</th>
+      <th>Project Folder Number</th>
+      <th>Project Link</th>
+      <th>Project Jury</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for project in projects %}
+    <tr>
+      <td>{{ project.projectName }}</td>
+      <td>{{ project.projectId }}</td>
+      <td>{{ project.projectDescription }}</td>
+      <td>{{ project.projectStatus }}</td>
+      <td>{{ project.projectStartDate }}</td>
+      <td>{{ project.projectFolderNumber }}</td>
+      <td>{{ project.projectLink }}</td>
+      <td>{{ project.projectJury }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>No projects available for this client.</p>
+{% endif %} {% endblock %}

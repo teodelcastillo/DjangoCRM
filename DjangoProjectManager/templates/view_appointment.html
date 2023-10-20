@@ -1,0 +1,16 @@
+{% extends "base.html" %} {%block content%}
+
+<div class="card" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">{{appointment.description}}</h5>
+    <h6 class="card-subtitle mb-2 text-body-secondary">{{appointment.date}}</h6>
+
+   
+  </div>
+</div>
+</br></br>
+
+<a href='{% url "appointments"  %}' class="btn btn-primary">Back</a>
+<a href='{% url "delete_appointment" appointment.id %}' class="btn btn-danger">Delete</a>
+<a href='{% url "update_appointment" appointment.id %}' class="btn btn-warning">Edit</a>
+{% endblock %}

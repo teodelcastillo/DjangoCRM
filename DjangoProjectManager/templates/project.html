@@ -1,0 +1,21 @@
+{% extends "base.html" %} {%block content%}
+
+<div class="card" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">{{project.projectName}}</h5>
+    <h6 class="card-subtitle mb-2 text-body-secondary">{{project.projectId}}</h6>
+    <p class="card-text">Numero de carpeta: {{project.projectFolderNumber}}</p>
+    <p class="card-text">Descripcion del caso: {{project.projectDescription}}</p>
+    <p class="card-text">Juzgado: {{project.projectJury}}</p>
+    <p class="card-text">Estado: {{project.projectStatus}}</p>
+    <p class="card-text">Cliente: {{project.client_id}}</p>
+    <a href="#" class="card-link">Documentacion del caso</a>
+   
+  </div>
+</div>
+</br></br>
+
+<a href='{% url "home"  %}' class="btn btn-primary">Back</a>
+<a href='{% url "delete_project" project.id %}' class="btn btn-danger">Delete</a>
+<a href='{% url "update_project" project.id %}' class="btn btn-warning">Edit</a>
+{% endblock %}

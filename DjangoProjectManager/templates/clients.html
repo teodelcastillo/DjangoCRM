@@ -1,0 +1,53 @@
+{% extends 'base.html'%} {% block content %} {% if user.is_authenticated %}
+<h1>Clientes</h1>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Nombre</th>
+      <th scope="col">CUIT</th>
+      <th scope'col'>ID</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% if clients %} {% for client in clients %}
+    <tr>
+      <td><a href='{% url "view_client" client.id %}'>{{client.name}}</a></td>
+      <td>{{client.clientID}}</td>
+      <td>{{client.id}}</td>
+
+    </tr>
+    {% endfor %} {%endif%}
+  </tbody>
+</table>
+{% else %}
+<div class='col-md-6 offset-md-3'>
+  <h1>Iniciar sesion</h1>
+  <form method="POST" action="{%url 'home' %}">
+    {% csrf_token %}
+    <form>
+      <div class="mb-3">
+        <input
+          type="text"
+          class="form-control"
+          name="username"
+          placeholder="Username"
+          required
+        />
+      </div>
+
+      <div class="mb-3">
+        <input
+          type="password"
+          class="form-control"
+          name="password"
+          placeholder="Password"
+          required
+        />
+      </div>
+
+      <button type="submit" class="btn btn-primary">Iniciar sesion</button>
+    </form>
+</div>
+
+  {% endif %} {% endblock %}
+</form>
