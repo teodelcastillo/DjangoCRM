@@ -221,3 +221,15 @@ def delete_appointment(request, pk):
     else:
         messages.success(request, 'You must be logged in to do that.')
         return redirect('home')
+
+
+def project_appointments(request, pk):
+    if request.user.is_authenticated:
+        # Use 'pk' to retrieve the project
+        project = Project.objects.get(pk=pk)
+        # Access appointments using the related name
+        appointments = project.appointments.all()
+        return render(request, 'project_appointments.html', {'project': project, 'appointments': appointments})
+    else:
+        messages.success(request, 'You must be logged in to view that.')
+        return redirect('home')

@@ -10,6 +10,7 @@
     <p class="card-text">Estado: {{project.projectStatus}}</p>
     <p class="card-text">Cliente: {{project.client_id}}</p>
     <a href="#" class="card-link">Documentacion del caso</a>
+    <a href='{% url "project_appointments" project.id %}' class="card-link">Citas</a>
    
   </div>
 </div>

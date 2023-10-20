@@ -1,0 +1,28 @@
+{% extends "base.html" %} {% block content %}
+<h2>Appointments for {{ project.projectName }}</h2>
+
+{% if appointments %}
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Project ID</th>
+      <th>Project Description</th>
+      <th>Project Status</th>
+      <th>Project Start Date</th>
+      <th>Project Folder Number</th>
+      <th>Project Link</th>
+      <th>Project Jury</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for appointment in appointments %}
+    <tr>
+      <td>{{ appointment.description }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>No appointments for this project</p>
+{% endif %} {% endblock %}
