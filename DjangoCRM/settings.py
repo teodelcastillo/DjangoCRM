@@ -25,7 +25,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'DjangoProjectManager'
+    'DjangoProjectManager',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -64,8 +65,8 @@ WSGI_APPLICATION = 'DjangoCRM.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'DjangoCRM',
+        'ENGINE': 'mysql.connector.django',
+        'NAME': 'djangocrm',
         'USER': 'root',
         'PASSWORD': 'root',
         'HOST': 'localhost',
