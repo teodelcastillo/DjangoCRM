@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 from DjangoProjectManager.models import Client
-from .serializers import ClientSerializer
+from .serializers import ClientSerializer, ProjectSerializer
 
 # Get all clients (GET)
 @api_view(['GET'])
@@ -55,3 +55,16 @@ def deleteClient(request, client_id):
     
     client.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
+
+# Get client projects (GET)
+@api_view(['GET'])
+def client_projects(request, pk):
+    try:
+        client = Client.objects.get(pk=pk)
+    except Client.DoesNotExist:
+        return Response({'error': 'Client not found'}, status=404)
+
+    projects = client.projects.all()  # Accede a los proyectos a través de la relación
+    project_serializer = ProjectSerializer(projects, many=True)
+
+    return Response(project_serializer.data)
