@@ -13,8 +13,15 @@ urlpatterns = [
 
     ### Projects ###
     path('getProjects/', views.getProjects),
-    path('addClient/', views.addProject),
+    path('addProject/', views.addProject),
     path('updateProject/<int:project_id>/', views.updateProject),
     path('deleteProject/<int:project_id>/', views.deleteProject),
     path('getProjectDetails/<int:project_id>/', views.getProjectDetail),
+
+    ### Appointments ###
+    path('getAppointments/', views.getAppointments),
+    path('addAppointment/', views.addAppointment),
+    path('updateAppointment/<int:appointment_id>/', views.updateAppointment),
+    path('deleteAppointment/<int:appointment_id>/', views.deleteAppointment),
+    path('getAppointmentDetails/<int:appointment_id>/', views.getAppointmentDetail),
 ]

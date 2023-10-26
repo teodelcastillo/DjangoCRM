@@ -1,8 +1,8 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
-from DjangoProjectManager.models import Client, Project
-from .serializers import ClientSerializer, ProjectSerializer
+from DjangoProjectManager.models import Client, Project, Appointment
+from .serializers import ClientSerializer, ProjectSerializer, AppointmentSerializer
 
 ### CLIENTS ###
 
@@ -124,4 +124,58 @@ def getProjectDetail(request, project_id):
         return Response(status=status.HTTP_404_NOT_FOUND)
     
     serializer = ProjectSerializer(project)
+    return Response(serializer.data)
+
+### APPOINTMENTS ###
+
+# Get appointments (GET)
+@api_view(['GET'])
+def getAppointments(request):
+    appointments = Appointment.objects.all()
+    serializer = AppointmentSerializer(appointments, many = True)
+    return Response(serializer.data)
+
+# Add a new appointment (POST)
+@api_view(['POST'])
+def addAppointment(request):
+    serializer = AppointmentSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# Update client by ID (PUT)
+@api_view(['PUT'])
+def updateAppointment(request, appointment_id):
+    try:
+        appointment = Appointment.objects.get(pk=appointment_id)
+    except Appointment.DoesNotExist():
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    serializer = AppointmentSerializer(appointment, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# Delete appointment by ID (DELETE)
+@api_view(['DELETE'])
+def deleteAppointment(request, appointment_id):
+    try:
+        appointment = Appointment.objects.get(pk=appointment_id)
+    except Appointment.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    appointment.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
+
+# Get appointment by ID (GET)
+@api_view(['GET'])
+def getAppointmentDetail(request, appointment_id):
+    try:
+        appointment = Appointment.objects.get(pk=appointment_id)
+    except Appointment.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    serializer = AppointmentSerializer(appointment)
     return Response(serializer.data)
