@@ -82,6 +82,7 @@ def getProjects(request):
     return Response(serializer.data)
 
 # Add a new project (POST)
+@api_view(['POST'])
 def addProject(request):
     serializer = ProjectSerializer(data=request.data)
     if serializer.is_valid():
