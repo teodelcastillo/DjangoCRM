@@ -79,6 +79,13 @@ def client_projects(request, pk):
 def getProjects(request):
     projects = Project.objects.all()
     serializer = ProjectSerializer(projects, many = True)
+    data = serializer.data
+
+    for project in data:
+        clientId = project['client']
+        client = Client.objects.get(pk = clientId)
+        project['clientName'] = client.name
+
     return Response(serializer.data)
 
 # Add a new project (POST)

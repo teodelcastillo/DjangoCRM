@@ -7,6 +7,9 @@ class ClientSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ProjectSerializer(serializers.ModelSerializer):
+    clientName = serializers.CharField(source='client.name', read_only = True)
+
+
     class Meta:
         model = Project
         fields = "__all__"
