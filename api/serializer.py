@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ..DjangoProjectManager.models import Project, Client, Appointment
+from DjangoProjectManager.models import Project, Client, Appointment
 
 class ProjectSerializer (serializers.ModelSerializer):
     class Meta:
