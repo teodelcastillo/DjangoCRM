@@ -8,9 +8,12 @@ class Client(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=100)
     clientID = models.CharField(max_length=11, unique=True)
+    assignedTo = models.ManyToManyField(User, related_name='assigned_clients', default=User.objects.get(username='teodorodelcastillo').id)
 
     def __str__(self):
         return (f"{self.name} - {self.clientID}")
+
+
 
 
 class Contact(models.Model):
@@ -37,20 +40,19 @@ class Project(models.Model):
     projectFolderNumber = models.CharField(max_length=5)
     projectLink = models.CharField(max_length=1000)
     projectJury = models.CharField(max_length=200)
-    assignedTo = models.ManyToManyField(User, related_name='projects', default= "Teodoro del Castillo")
+    assignedTo = models.ManyToManyField(User, related_name='projects')
 
     def save(self, *args, **kwargs):
-        
-        if self.client:
-            self.clientName = self.client.name
+        if not self.assignedTo.exists() and self.client:
+            self.assignedTo.add(*self.client.assignedTo.all())
 
         super(Project, self).save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.projectName} - {self.projectId}"
 
-
 class Appointment(models.Model):
+
     # Campos específicos del Appointment
     title = models.TextField(default='pruebas')
     date = models.DateField()
@@ -65,12 +67,22 @@ class Appointment(models.Model):
     done_comment = models.TextField(null=True, blank=True)
 
     # Relación con Client (opcional, si un Appointment está relacionado a un Cliente)
-    client = models.ForeignKey(Client, on_delete=models.SET_NULL,
+    client = models.ForeignKey(Client, on_delete=models.CASCADE,
                                null=True, blank=True, related_name='appointments')
 
     # Relación con Project (opcional, si un Appointment está relacionado a un Proyecto)
     project = models.ForeignKey(
-        Project, on_delete=models.SET_NULL, null=True, blank=True, related_name='appointments')
+        Project, on_delete=models.CASCADE, null=True, blank=True, related_name='appointments')
+    
+    assignedTo = models.ManyToManyField(User, related_name='appointments')
+
+    def save(self, *args, **kwargs):
+        if not self.assignedTo.exists() and self.project:
+            # Si no hay usuarios asignados a la cita y hay un proyecto asociado, usa los usuarios asignados al proyecto
+            self.assignedTo.add(*self.project.assignedTo.all())
+
+        super(Appointment, self).save(*args, **kwargs)
 
     def __str__(self):
         return f"Appointment on {self.date} at {self.time}"
+
