@@ -1,11 +1,16 @@
 from rest_framework import serializers
 from DjangoProjectManager.models import Project, Client, Appointment
 
-class ProjectSerializer (serializers.ModelSerializer):
+class ProjectSerializer(serializers.ModelSerializer):
+    clientName = serializers.SerializerMethodField()  # Agrega el campo 'clientName'
+
     class Meta:
         model = Project
         fields = '__all__'
 
+    def get_clientName(self, project):
+        # Obtén el nombre del cliente asociado al proyecto
+        return project.client.name
         
 class ClientSerializer (serializers.ModelSerializer):
     class Meta:
@@ -17,3 +22,6 @@ class AppointmentSerializer (serializers.ModelSerializer):
         model = Appointment
         fields = '__all__'
 
+
+class ProjectWithAppointmentsSerializer(ProjectSerializer):
+    appointments = AppointmentSerializer(many=True, read_only=True)

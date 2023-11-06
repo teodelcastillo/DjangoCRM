@@ -39,8 +39,15 @@ class Project(models.Model):
     projectJury = models.CharField(max_length=200)
     assignedTo = models.ManyToManyField(User, related_name='projects', default= "Teodoro del Castillo")
 
+    def save(self, *args, **kwargs):
+        
+        if self.client:
+            self.clientName = self.client.name
+
+        super(Project, self).save(*args, **kwargs)
+
     def __str__(self):
-        return (f"{self.projectName} - {self.projectId}")
+        return f"{self.projectName} - {self.projectId}"
 
 
 class Appointment(models.Model):

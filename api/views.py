@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 from DjangoProjectManager.models import Client, Project, Appointment
-from .serializer import ClientSerializer, ProjectSerializer, AppointmentSerializer
+from .serializer import ClientSerializer, ProjectSerializer, AppointmentSerializer, ProjectWithAppointmentsSerializer
 
 ### PROJECTS ###
 
@@ -11,12 +11,6 @@ from .serializer import ClientSerializer, ProjectSerializer, AppointmentSerializ
 def getProjects(request):
     projects = Project.objects.all()
     serializer = ProjectSerializer(projects, many = True)
-    data = serializer.data
-
-    for project in data:
-        clientId = project['client']
-        client = Client.objects.get(pk = clientId)
-        project['clientName'] = client.name
 
     return Response(serializer.data)
 
@@ -70,7 +64,7 @@ def getProjectDetail(request, project_id):
 @api_view(['GET'])
 def getProjectsWithAppointments(request):
     projects = Project.objects.filter(appointments__isnull=False).distinct()
-    serializer = ProjectSerializer(projects, many=True)
+    serializer = ProjectWithAppointmentsSerializer(projects, many=True)
     return Response(serializer.data)
 
 
