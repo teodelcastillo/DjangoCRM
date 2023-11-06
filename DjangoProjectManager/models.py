@@ -32,13 +32,12 @@ class Project(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     projectName = models.CharField(max_length=150)
     projectId = models.CharField(max_length=20, unique=True)
-    projectDescription = models.TextField()
-    projectStatus = models.CharField(max_length=20)
-    projectStartDate = models.DateField()
+    projectDescription = models.TextField(blank=False)
+    projectStatus = models.CharField(max_length=20, default="Active")
     projectFolderNumber = models.CharField(max_length=5)
     projectLink = models.CharField(max_length=1000)
     projectJury = models.CharField(max_length=200)
-    assignedTo = models.ManyToManyField(User, related_name='projects')
+    assignedTo = models.ManyToManyField(User, related_name='projects', default= "Teodoro del Castillo")
 
     def __str__(self):
         return (f"{self.projectName} - {self.projectId}")
@@ -46,6 +45,7 @@ class Project(models.Model):
 
 class Appointment(models.Model):
     # Campos específicos del Appointment
+    title = models.TextField(default='pruebas')
     date = models.DateField()
     time = models.TimeField()
     description = models.TextField()

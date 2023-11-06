@@ -4,24 +4,25 @@ from . import views
 urlpatterns = [
 
     ### Clients ###
-    path('getClients/', views.getClients),
-    path('addClient/', views.addClient),
-    path('getClientDetail/<int:client_id>/', views.getClientDetail),
+    path('clients/', views.getClients),
+    path('newClient/', views.addClient),
+    path('clients/<int:client_id>/', views.getClientDetail),
     path('updateClient/<int:client_id>/', views.addClient),
     path('deleteClient/<int:client_id>/', views.deleteClient),
-    path('client/<int:pk>/projects/', views.client_projects),
+    path('clients/<int:pk>/projects/', views.client_projects),
 
     ### Projects ###
-    path('getProjects/', views.getProjects),
-    path('addProject/', views.addProject),
+    path('projects/', views.getProjects),
+    path('newProject/', views.addProject),
     path('updateProject/<int:project_id>/', views.updateProject),
     path('deleteProject/<int:project_id>/', views.deleteProject),
-    path('getProjectDetails/<int:project_id>/', views.getProjectDetail),
+    path('projects/<int:project_id>/', views.getProjectDetail),
+    path('projectsWithAppointments/', views.getProjectsWithAppointments, name='projects-with-appointments'),
 
     ### Appointments ###
-    path('getAppointments/', views.getAppointments),
-    path('addAppointment/', views.addAppointment),
+    path('appointments/', views.getAppointments),
+    path('newAppointment/', views.addAppointment),
     path('updateAppointment/<int:appointment_id>/', views.updateAppointment),
     path('deleteAppointment/<int:appointment_id>/', views.deleteAppointment),
-    path('getAppointmentDetails/<int:appointment_id>/', views.getAppointmentDetail),
+    path('appointments/<int:appointment_id>/', views.getAppointmentDetail),
 ]

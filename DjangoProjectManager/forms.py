@@ -11,7 +11,6 @@ class ProjectForm(forms.ModelForm):
             'projectId',
             'projectDescription',
             'projectStatus',
-            'projectStartDate',
             'projectFolderNumber',
             'projectLink',
             'projectJury',
