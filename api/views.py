@@ -1,8 +1,9 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
+from django.contrib.auth.models import User
 from DjangoProjectManager.models import Client, Project, Appointment
-from .serializer import ClientSerializer, ProjectSerializer, AppointmentSerializer, ProjectWithAppointmentsSerializer
+from .serializer import UserSerializer, ClientSerializer, ProjectSerializer, AppointmentSerializer, ProjectWithAppointmentsSerializer
 
 ### PROJECTS ###
 
@@ -175,4 +176,13 @@ def getAppointmentDetail(request, appointment_id):
         return Response(status=status.HTTP_404_NOT_FOUND)
     
     serializer = AppointmentSerializer(appointment)
+    return Response(serializer.data)
+
+
+### Users ###
+
+@api_view(['GET'])
+def getUsers(request):
+    users = User.objects.all()
+    serializer = UserSerializer(users, many= True)
     return Response(serializer.data)

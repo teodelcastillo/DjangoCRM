@@ -1,6 +1,13 @@
 from rest_framework import serializers
+from django.contrib.auth.models import User
 from DjangoProjectManager.models import Project, Client, Appointment
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'
+
+        
 class ProjectSerializer(serializers.ModelSerializer):
     clientName = serializers.SerializerMethodField()  # Agrega el campo 'clientName'
 

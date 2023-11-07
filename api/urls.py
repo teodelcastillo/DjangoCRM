@@ -23,4 +23,7 @@ urlpatterns = [
     path('appointments/update/<int:appointment_id>/', views.updateAppointment, name='update_appointment'),
     path('appointments/delete/<int:appointment_id>/', views.deleteAppointment, name='delete_appointment'),
     path('appointments/<int:appointment_id>/', views.getAppointmentDetail, name='appointment_detail'),
+
+    # URLs para Users
+    path('users/', views.getUsers, name='get_users')
 ]
