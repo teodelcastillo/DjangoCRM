@@ -9,7 +9,7 @@ class Client(models.Model):
     name = models.CharField(max_length=100)
     clientID = models.CharField(max_length=11, unique=True)
     assignedTo = models.ManyToManyField(User, related_name='assigned_clients', default=User.objects.get(username='teodorodelcastillo').id)
-
+    
     def __str__(self):
         return (f"{self.name} - {self.clientID}")
 
