@@ -5,23 +5,7 @@ from .models import Project, Client, Appointment
 class ProjectForm(forms.ModelForm):
     class Meta:
         model = Project
-        fields = [
-            'client',
-            'projectName',
-            'projectId',
-            'projectDescription',
-            'projectStatus',
-            'projectFolderNumber',
-            'projectLink',
-            'projectJury',
-        ]
-
-    # Cambia el campo client a un ModelChoiceField
-    client = forms.ModelChoiceField(
-        queryset=Client.objects.all(),
-        empty_label=None,  # Elimina la opción vacía
-        label="Cliente"  # Cambia el etiquetado del campo
-    )
+        fields = '__all__'
 
 
 class ClientForm(forms.ModelForm):

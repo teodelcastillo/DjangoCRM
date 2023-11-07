@@ -40,13 +40,7 @@ class Project(models.Model):
     projectFolderNumber = models.CharField(max_length=5)
     projectLink = models.CharField(max_length=1000)
     projectJury = models.CharField(max_length=200)
-    assignedTo = models.ManyToManyField(User, related_name='projects')
-
-    def save(self, *args, **kwargs):
-        if not self.assignedTo.exists() and self.client:
-            self.assignedTo.add(*self.client.assignedTo.all())
-
-        super(Project, self).save(*args, **kwargs)
+    assignedTo = models.ManyToManyField(User, related_name='assigned_projects', default=User.objects.get(username='teodorodelcastillo').id)
 
     def __str__(self):
         return f"{self.projectName} - {self.projectId}"
