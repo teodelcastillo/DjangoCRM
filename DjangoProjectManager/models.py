@@ -68,14 +68,7 @@ class Appointment(models.Model):
     project = models.ForeignKey(
         Project, on_delete=models.CASCADE, null=True, blank=True, related_name='appointments')
     
-    assignedTo = models.ManyToManyField(User, related_name='appointments')
-
-    def save(self, *args, **kwargs):
-        if not self.assignedTo.exists() and self.project:
-            # Si no hay usuarios asignados a la cita y hay un proyecto asociado, usa los usuarios asignados al proyecto
-            self.assignedTo.add(*self.project.assignedTo.all())
-
-        super(Appointment, self).save(*args, **kwargs)
+    assignedTo = models.ManyToManyField(User, related_name='assigned_appointments', default=User.objects.get(username='teodorodelcastillo').id)
 
     def __str__(self):
         return f"Appointment on {self.date} at {self.time}"
