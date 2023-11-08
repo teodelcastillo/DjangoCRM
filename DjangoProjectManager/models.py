@@ -10,6 +10,9 @@ class Client(models.Model):
     clientID = models.CharField(max_length=11, unique=True)
     assignedTo = models.ManyToManyField(User, related_name='assigned_clients', default=User.objects.get(username='teodorodelcastillo').id)
     
+    def ammount_of_projects(self):
+        return self.projects.count() 
+
     def __str__(self):
         return (f"{self.name} - {self.clientID}")
 

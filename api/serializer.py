@@ -16,18 +16,32 @@ class ProjectSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_clientName(self, project):
-        # Obtén el nombre del cliente asociado al proyecto
+        
         return project.client.name
         
-class ClientSerializer (serializers.ModelSerializer):
+class ClientSerializer(serializers.ModelSerializer):
+    ammount_of_projects = serializers.SerializerMethodField()
+
     class Meta:
         model = Client
         fields = '__all__'
 
+    def get_ammount_of_projects(self, client):
+        return client.ammount_of_projects()
+
 class AppointmentSerializer (serializers.ModelSerializer):
+    projectName = serializers.SerializerMethodField()
+    clientName = serializers.SerializerMethodField()
+
     class Meta:
         model = Appointment
         fields = '__all__'
+    
+    def get_projectName(self, appointment):
+        return appointment.project.projectName
+    
+    def get_clientName(self, appointment):
+        return appointment.client.name
 
 
 class ProjectWithAppointmentsSerializer(ProjectSerializer):

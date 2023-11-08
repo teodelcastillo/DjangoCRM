@@ -68,6 +68,13 @@ def getProjectsWithAppointments(request):
     serializer = ProjectWithAppointmentsSerializer(projects, many=True)
     return Response(serializer.data)
 
+# Get projects with appointments not done (GET)
+@api_view(['GET'])
+def getUncompletedProjects(request):
+    projects = Project.objects.filter(appointments__is_done=False).distinct()
+    serializer = ProjectWithAppointmentsSerializer(projects, many=True)
+    return Response(serializer.data)
+
 
 ### CLIENTS ###
 
