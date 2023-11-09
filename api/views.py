@@ -215,5 +215,5 @@ def getUsers(request):
     paginator = CustomPageNumberPagination()
     result_page = paginator.paginate_queryset(users, request)
 
-    serializer = ProjectSerializer(result_page, many=True)
+    serializer = UserSerializer(result_page, many=True)
     return Response(serializer.data)
