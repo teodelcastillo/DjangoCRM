@@ -157,7 +157,7 @@ def getAppointments(request):
     paginator = CustomPageNumberPagination()
     result_page = paginator.paginate_queryset(appointments, request)
 
-    serializer = ClientSerializer(result_page, many=True)
+    serializer = AppointmentSerializer(result_page, many=True)
     return Response(serializer.data)
 
 # Add a new appointment (POST)

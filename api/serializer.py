@@ -35,8 +35,8 @@ class ProjectSerializer(serializers.ModelSerializer):
 
 
 class AppointmentSerializer (serializers.ModelSerializer):
-    projectName = serializers.SerializerMethodField()
-    clientName = serializers.SerializerMethodField()
+    project_name = serializers.SerializerMethodField()
+    client_name = serializers.SerializerMethodField()
 
     class Meta:
         model = Appointment
