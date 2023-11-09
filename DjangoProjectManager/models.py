@@ -1,11 +1,10 @@
-
+from django.utils import timezone
 from django.contrib.auth.models import User
 from django.db import models
 
 
 class Client(models.Model):
     # Información básica del cliente
-    created_at = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=100)
     clientID = models.CharField(max_length=11, unique=True)
     assignedTo = models.ManyToManyField(User, related_name='assigned_clients', default=User.objects.get(username='teodorodelcastillo').id)
@@ -35,14 +34,13 @@ class Contact(models.Model):
 class Project(models.Model):
     client = models.ForeignKey(
         Client, on_delete=models.CASCADE, related_name='projects')
-    created_at = models.DateTimeField(auto_now_add=True)
     projectName = models.CharField(max_length=150)
-    projectId = models.CharField(max_length=20, unique=True)
-    projectDescription = models.TextField(blank=False)
+    projectId = models.CharField(max_length=20, unique=True, blank=True)
+    projectDescription = models.TextField(default='Completar informacion')
     projectStatus = models.CharField(max_length=20, default="Active")
-    projectFolderNumber = models.CharField(max_length=5)
-    projectLink = models.CharField(max_length=1000)
-    projectJury = models.CharField(max_length=200)
+    projectFolderNumber = models.CharField(max_length=5, blank=True)
+    projectLink = models.CharField(max_length=1000, default='adelcastillo.com.ar')
+    projectJury = models.CharField(max_length=200, blank=True)
     assignedTo = models.ManyToManyField(User, related_name='assigned_projects', default=User.objects.get(username='teodorodelcastillo').id)
 
     def __str__(self):
