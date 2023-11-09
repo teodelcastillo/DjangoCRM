@@ -1,9 +1,13 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework.pagination import PageNumberPagination
 from rest_framework import status
 from django.contrib.auth.models import User
 from DjangoProjectManager.models import Client, Project, Appointment
 from .serializer import UserSerializer, ClientSerializer, ProjectSerializer, AppointmentSerializer, ProjectWithAppointmentsSerializer
+
+class CustomPageNumberPagination(PageNumberPagination):
+    page_size: 10
 
 ### PROJECTS ###
 
@@ -11,9 +15,13 @@ from .serializer import UserSerializer, ClientSerializer, ProjectSerializer, App
 @api_view(['GET'])
 def getProjects(request):
     projects = Project.objects.all()
-    serializer = ProjectSerializer(projects, many = True)
 
+    paginator = CustomPageNumberPagination()
+    result_page = paginator.paginate_queryset(projects, request)
+
+    serializer = ProjectSerializer(result_page, many=True)
     return Response(serializer.data)
+
 
 # Add a new project (POST)
 @api_view(['POST'])
@@ -72,7 +80,11 @@ def getProjectsWithAppointments(request):
 @api_view(['GET'])
 def getUncompletedProjects(request):
     projects = Project.objects.filter(appointments__is_done=False).distinct()
-    serializer = ProjectWithAppointmentsSerializer(projects, many=True)
+
+    paginator = CustomPageNumberPagination()
+    result_page = paginator.paginate_queryset(projects, request)
+
+    serializer = ClientSerializer(result_page, many=True)
     return Response(serializer.data)
 
 
@@ -82,7 +94,11 @@ def getUncompletedProjects(request):
 @api_view(['GET'])
 def getClients(request):
     clients = Client.objects.all()
-    serializer = ClientSerializer(clients, many=True)
+
+    paginator = CustomPageNumberPagination()
+    result_page = paginator.paginate_queryset(clients, request)
+
+    serializer = ClientSerializer(result_page, many=True)
     return Response(serializer.data)
 
 # Add a new client (POST)
@@ -137,7 +153,11 @@ def getClientDetail(request, client_id):
 @api_view(['GET'])
 def getAppointments(request):
     appointments = Appointment.objects.all()
-    serializer = AppointmentSerializer(appointments, many=True)
+
+    paginator = CustomPageNumberPagination()
+    result_page = paginator.paginate_queryset(appointments, request)
+
+    serializer = ClientSerializer(result_page, many=True)
     return Response(serializer.data)
 
 # Add a new appointment (POST)
@@ -191,5 +211,9 @@ def getAppointmentDetail(request, appointment_id):
 @api_view(['GET'])
 def getUsers(request):
     users = User.objects.all()
-    serializer = UserSerializer(users, many= True)
+
+    paginator = CustomPageNumberPagination()
+    result_page = paginator.paginate_queryset(users, request)
+
+    serializer = ProjectSerializer(result_page, many=True)
     return Response(serializer.data)

@@ -8,15 +8,24 @@ class Client(models.Model):
     name = models.CharField(max_length=100)
     clientID = models.CharField(max_length=11, unique=True)
     assignedTo = models.ManyToManyField(User, related_name='assigned_clients', default=User.objects.get(username='teodorodelcastillo').id)
-    
-    def ammount_of_projects(self):
-        return self.projects.count() 
 
     def __str__(self):
         return (f"{self.name} - {self.clientID}")
 
+class Project(models.Model):
+    client = models.ForeignKey(
+        Client, on_delete=models.CASCADE, related_name= 'projects')
+    projectName = models.CharField(max_length=150)
+    projectId = models.CharField(max_length=20, unique=True, blank=True)
+    projectDescription = models.TextField(default='Completar informacion')
+    projectStatus = models.CharField(max_length=20, choices=(('Active', 'Active'), ('Finished', 'Finished')), default='Active')
+    projectFolderNumber = models.CharField(max_length=5, blank=True)
+    projectLink = models.CharField(max_length=1000, default='adelcastillo.com.ar')
+    projectJury = models.CharField(max_length=200, blank=True)
+    assignedTo = models.ManyToManyField(User, related_name='assigned_projects', default=User.objects.get(username='teodorodelcastillo').id)
 
-
+    def __str__(self):
+        return f"{self.projectName} - {self.projectId}"
 
 class Contact(models.Model):
     client = models.ForeignKey(
@@ -29,22 +38,6 @@ class Contact(models.Model):
 
     def __str__(self):
         return (f"{self.contactName} - {self.contactEmail}")
-
-
-class Project(models.Model):
-    client = models.ForeignKey(
-        Client, on_delete=models.CASCADE, related_name='projects')
-    projectName = models.CharField(max_length=150)
-    projectId = models.CharField(max_length=20, unique=True, blank=True)
-    projectDescription = models.TextField(default='Completar informacion')
-    projectStatus = models.CharField(max_length=20, default="Active")
-    projectFolderNumber = models.CharField(max_length=5, blank=True)
-    projectLink = models.CharField(max_length=1000, default='adelcastillo.com.ar')
-    projectJury = models.CharField(max_length=200, blank=True)
-    assignedTo = models.ManyToManyField(User, related_name='assigned_projects', default=User.objects.get(username='teodorodelcastillo').id)
-
-    def __str__(self):
-        return f"{self.projectName} - {self.projectId}"
 
 class Appointment(models.Model):
 
@@ -67,9 +60,13 @@ class Appointment(models.Model):
 
     # Relación con Project (opcional, si un Appointment está relacionado a un Proyecto)
     project = models.ForeignKey(
-        Project, on_delete=models.CASCADE, null=True, blank=True, related_name='appointments')
+        Project, on_delete=models.CASCADE, related_name='appointments')
     
     assignedTo = models.ManyToManyField(User, related_name='assigned_appointments', default=User.objects.get(username='teodorodelcastillo').id)
+
+    @property
+    def client(self):
+        return self.project.client if self.project else None
 
     def __str__(self):
         return f"Appointment on {self.date} at {self.time}"
