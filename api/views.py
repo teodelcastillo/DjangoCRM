@@ -2,6 +2,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import status
+from django.db.models import Q
 from django.contrib.auth.models import User
 from DjangoProjectManager.models import Client, Project, Appointment
 from .serializer import UserSerializer, ClientSerializer, ProjectSerializer, AppointmentSerializer, ProjectWithAppointmentsSerializer
@@ -79,12 +80,10 @@ def getProjectsWithAppointments(request):
 # Get projects with appointments not done (GET)
 @api_view(['GET'])
 def getUncompletedProjects(request):
+    # Filter projects with at least one appointment not done
     projects = Project.objects.filter(appointments__is_done=False).distinct()
 
-    paginator = CustomPageNumberPagination()
-    result_page = paginator.paginate_queryset(projects, request)
-
-    serializer = ClientSerializer(result_page, many=True)
+    serializer = ProjectSerializer(projects, many=True)
     return Response(serializer.data)
 
 
