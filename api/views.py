@@ -83,7 +83,7 @@ def getUncompletedProjects(request):
     # Filter projects with at least one appointment not done
     projects = Project.objects.filter(appointments__is_done=False).distinct()
 
-    serializer = ProjectSerializer(projects, many=True)
+    serializer = ProjectWithAppointmentsSerializer(projects, many=True)
     return Response(serializer.data)
 
 

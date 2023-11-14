@@ -52,3 +52,4 @@ class AppointmentSerializer (serializers.ModelSerializer):
 class ProjectWithAppointmentsSerializer(ProjectSerializer):
     appointments = AppointmentSerializer(many=True, read_only=True)
 
+
